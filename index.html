@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Note & Coin Counter</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: #f1f3f8;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 450px;
+        background: #fff;
+        margin: auto;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 { text-align: center; margin-bottom: 10px; }
+
+    .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    }
+
+    .row span:first-child {
+    flex: 1;
+    }
+
+    .row input {
+        width: 70px;
+        padding: 6px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    .subtotal {
+        min-width: 80px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .deleteBtn {
+    background: #dc3545;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    }
+
+
+    #addBox {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    #addBox input {
+        flex: 1;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+
+    button {
+        background: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    button:hover { background: #005fcc; }
+
+    #totalDisplay {
+        background: #007bff;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bolder;
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Note & Coin Counter</h2>
+
+    <div id="itemsArea">
+
+        <!-- Default Items -->
+        <div class="row">
+            <span>₹1 Coin</span>
+            <input type="number" value="0" class="qty" data-value="1">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹2 Coin</span>
+            <input type="number" value="0" class="qty" data-value="2">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹5 Coin</span>
+            <input type="number" value="0" class="qty" data-value="5">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹10 Coin</span>
+            <input type="number" value="0" class="qty" data-value="10">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹10 Note</span>
+            <input type="number" value="0" class="qty" data-value="10">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹20 Note</span>
+            <input type="number" value="0" class="qty" data-value="20">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹50 Note</span>
+            <input type="number" value="0" class="qty" data-value="50">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹100 Note</span>
+            <input type="number" value="0" class="qty" data-value="100">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹200 Note</span>
+            <input type="number" value="0" class="qty" data-value="200">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+        <div class="row">
+            <span>₹500 Note</span>
+            <input type="number" value="0" class="qty" data-value="500">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        </div>
+
+    </div>
+
+    <!-- Add New Note/Coin -->
+    <div id="addBox">
+        <input type="number" id="newValue" placeholder="Enter note/coin value">
+        <button onclick="addNew()">Add</button>
+    </div>
+
+    <button onclick="resetAll()" style="background:#dc3545;">Reset</button>
+
+    <div id="totalDisplay">Total: ₹0</div>
+
+    <div id="amountWords" style="margin-top:10px; font-weight:bold; font-size:16px;"></div>
+
+    <button onclick="downloadPDF()" style="background:#28a745;">Download PDF</button>
+
+</div>
+
+
+<script>
+function autoUpdate() {
+    let rows = document.querySelectorAll(".row");
+    let total = 0;
+
+    rows.forEach(row => {
+        let input = row.querySelector(".qty");
+        let subtotalBox = row.querySelector(".subtotal");
+
+        let qty = Number(input.value);
+        let value = Number(input.dataset.value);
+
+        let subtotal = qty * value;
+        subtotalBox.textContent = subtotal;
+
+        total += subtotal;
+    });
+
+    document.getElementById("totalDisplay").innerText = "Total: ₹" + total;
+     document.getElementById("amountWords").innerText = "In Words: " + numberToWords(total);
+}
+
+function addNew() {
+    let value = Number(document.getElementById("newValue").value);
+    if (!value || value <= 0) {
+        alert("Enter valid note/coin value");
+        return;
+    }
+
+    let div = document.createElement("div");
+    div.className = "row";
+    div.innerHTML = `
+        <span>₹${value}</span>
+        <input type="number" value="0" class="qty" data-value="${value}">
+        <span class="subtotal">0</span>
+        <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+    `;
+
+    document.getElementById("itemsArea").appendChild(div);
+
+    // Add event listeners
+    div.querySelector(".qty").addEventListener("input", autoUpdate);
+
+    document.getElementById("newValue").value = "";
+}
+
+function deleteRow(btn) {
+    btn.parentElement.remove();
+    autoUpdate();
+}
+
+function resetAll() {
+    document.getElementById("itemsArea").innerHTML = "";
+
+    // Add default items again
+    const defaults = [
+        1, 2, 5, 10, 10, 20, 50, 100, 200, 500
+    ];
+
+    defaults.forEach(value => {
+        let type = value <= 10 ? "Coin" : "Note";
+        let div = document.createElement("div");
+        div.className = "row";
+
+        div.innerHTML = `
+            <span>₹${value} ${type}</span>
+            <input type="number" value="0" class="qty" data-value="${value}">
+            <span class="subtotal">0</span>
+            <button class="deleteBtn" onclick="deleteRow(this)">❌</button>
+        `;
+
+        document.getElementById("itemsArea").appendChild(div);
+
+        // Re-attach event listener
+        div.querySelector(".qty").addEventListener("input", autoUpdate);
+    });
+
+    // Reset total & words
+    document.getElementById("totalDisplay").innerText = "Total: ₹0";
+    document.getElementById("amountWords").innerText = "In Words: ";
+}
+
+
+function numberToWords(num) {
+    if (num === 0) return "zero";
+
+    const ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    const teens = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    const units = ["", "Thousand", "Lakh", "Crore"];
+
+    function convertBelowThousand(n) {
+        let str = "";
+
+        if (n > 99) {
+            str += ones[Math.floor(n / 100)] + " Hundred ";
+            n %= 100;
+        }
+        if (n > 19) {
+            str += tens[Math.floor(n / 10)] + " ";
+            n %= 10;
+        }
+        if (n >= 10 && n <= 19) {
+            str += teens[n - 10] + " ";
+        } else if (n > 0) {
+            str += ones[n] + " ";
+        }
+        return str.trim();
+    }
+
+    let result = "";
+    let unitIndex = 0;
+
+    while (num > 0) {
+        let chunk;
+
+        if (unitIndex === 0) {
+            chunk = num % 1000;
+            num = Math.floor(num / 1000);
+        } else {
+            chunk = num % 100;
+            num = Math.floor(num / 100);
+        }
+
+        if (chunk) {
+            result = convertBelowThousand(chunk) + " " + units[unitIndex] + " " + result;
+        }
+
+        unitIndex++;
+    }
+
+    return result.trim() + " Rupees Only";
+}
+
+
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;     // FIX 1
+    const pdf = new jsPDF();
+
+    pdf.setFontSize(18);
+    pdf.text("Note & Coin Counter Report", 14, 18);
+
+    let rows = [];
+    let totalAmount = 0;
+
+    document.querySelectorAll(".row").forEach(row => {
+        let name = row.querySelector("span").innerText;
+        let qty = row.querySelector(".qty").value;
+        let subtotal = row.querySelector(".subtotal").innerText;
+
+        if (qty > 0) {
+            rows.push([name, qty, subtotal]);
+            totalAmount += parseFloat(subtotal);
+        }
+    });
+
+    pdf.autoTable({
+        startY: 30,
+        head: [["Coin/Note", "Count", "Subtotal"]],
+        body: rows,
+        theme: "grid",
+        headStyles: { fillColor: [41, 128, 185] },
+        margin: { left: 14, right: 14 }
+    });
+
+    pdf.setFontSize(16);
+    pdf.text(`Total: ₹${totalAmount}`, 14, pdf.lastAutoTable.finalY + 15);
+
+    pdf.setFontSize(12);
+    pdf.text("Amount in Words: " + numberToWords(totalAmount), 14, pdf.lastAutoTable.finalY + 30);
+
+    pdf.save("Note_Count_Report.pdf");   // FIX 2
+}
+
+document.querySelectorAll(".qty").forEach(input => {
+    input.addEventListener("input", autoUpdate);
+});
+
+</script>
+
+</body>
+</html>
