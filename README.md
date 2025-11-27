@@ -10,18 +10,18 @@ This tool helps shopkeepers, cashiers, businesses, and individuals to quickly ca
 •	Daily Closing Balance Calculation
 
 **Key Features (SEO Optimized)**
-Real-Time Note & Coin Calculator
+**Real-Time Note & Coin Calculator**
 •	Auto-calculates totals as the user types
 •	Shows subtotal for each denomination
 •	Supports coins (1, 2, 5, 10) and notes (10, 20, 50, 100, 200, 500)
-Add Custom Denominations
+**Add Custom Denominations**
 •	Add any new currency value:
 •	₹2 coin
 •	₹2000 note
 •	Foreign currency
 •	Custom valuesDelete Rows Easily
 •	Remove any denomination instantly with a small circular delete button.Amount in Words Converter
-Automatically converts the final amount into words:
+**Automatically converts the final amount into words:**
 •	Example: ₹1250 → One Thousand Two Hundred Fifty Rupees OnlyDownload Cash Report as PDF
 One-click PDF generation containing:
 •	Denomination name
@@ -29,10 +29,10 @@ One-click PDF generation containing:
 •	Subtotal
 •	Grand total
 •	Amount in words
-PDF is generated using:
+**PDF is generated using:**
 •	jsPDF
 •	jsPDF AutoTable
-Sample Output (SEO Keywords: Note Count Report, Cash Report PDF)
+**Sample Output (SEO Keywords: Note Count Report, Cash Report PDF)**
 •	Denomination	•	Qty	•	Subtotal
 •	₹100 Note	•	5	•	₹500
 •	₹10 Coin	•	10	•	₹100
